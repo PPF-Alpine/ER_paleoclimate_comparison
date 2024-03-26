@@ -13,8 +13,6 @@ colnames(delta_t)[which(names(delta_t) %in% c("Mean_DT", "beyer_dt", "chelsa_dt"
 
 # Create a copy of the original data frame
 delta_t_diff <- delta_t
-
-
 # Plot the data
 ggplot(delta_t_diff, aes(x = GMTED2010)) +
     geom_point(aes(y = chelsa)) +
@@ -26,4 +24,3 @@ ggplot(delta_t_diff, aes(x = GMTED2010)) +
     xlab("Elevation") +
     ylab("Temperature Differences") +
     theme_minimal()
-
