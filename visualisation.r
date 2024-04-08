@@ -1,26 +1,23 @@
 # libraries
-# install.packages("dplyr")
-# install.packages("ggplot2")
-# library("dplyr")
-# library("ggplot2")
-
+install.packages("tidyverse")
+library("tidyverse")
+ 
 # Read the CSV file
-delta_t <- read.csv("./Proxy_models_ggc_gmba_dem.csv", sep = ";")
+file_path <-("C:\\Users\\elren9761\\OneDrive - University of Bergen\\Documents\\PhD\\Analyses\\visualisation_dT\\delta_t_diff.csv")
+delta_t_diff <- read_delim(file_path,locale = locale(decimal_mark = ","))|>janitor::clean_names()
 
-# Rename the columns
-colnames(delta_t)[which(names(delta_t) %in% c("Mean_DT", "beyer_dt", "chelsa_dt", "ecoclimate_dt", "paleopgem_dt", "worldclim30s_dt", "worldclim25m_dt", "ggc_dt"))] <- c("proxy", "beyer", "chelsa", "ecoclimate", "paleopgem", "worldclim30s", "worldclim25m", "ggc")
+delta_long <- delta_t_diff|>
+  dplyr::select(beyer_dt, chelsa_dt, ecoclimate_dt,paleopgem_dt,worldclim25m_dt,worldclim30s_dt,ggc_dt,gmted2010) |>
+  pivot_longer(cols = -gmted2010, 
+               names_to = "Model", 
+               values_to = "Values")
+
+# View the first few rows of the dataframe
+print(head(delta_t_diff))
 
 
-# Create a copy of the original data frame
-delta_t_diff <- delta_t
-# Plot the data
-ggplot(delta_t_diff, aes(x = GMTED2010)) +
-    geom_point(aes(y = chelsa)) +
-    geom_point(aes(y = ecoclimate)) +
-    geom_point(aes(y = paleopgem)) +
-    geom_point(aes(y = worldclim30s)) +
-    geom_point(aes(y = worldclim25m)) +
-    geom_point(aes(y = ggc)) +
-    xlab("Elevation") +
-    ylab("Temperature Differences") +
-    theme_minimal()
+ggplot(delta_long,aes(x=gmted2010, y=Values,color=Model))+
+  geom_point()+
+  scale_y_continuous(breaks=c(0,min(delta_long$Values),
+                              max(delta_long$Values)))+
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
