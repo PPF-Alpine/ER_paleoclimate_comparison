@@ -35,7 +35,20 @@ ggplot(delta_t_diff, aes(x = beyer_diff_mean, y = gmted2010, color = factor(in_m
   labs(y = "gmted2010", x = "beyer_diff_mean") +
   theme_minimal()
 
-  
+# now plot for all models
+ggplot(delta_t_diff, aes(y = gmted2010, color = factor(in_mr))) +
+  geom_point(aes(x = beyer_diff_mean), size = 3) +
+  geom_point(aes(x = chelsa_diff_mean), size = 3) +
+  geom_point(aes(x = ecoclimate_diff_mean), size = 3) +
+  geom_point(aes(x = paleopgem_diff_mean), size = 3) +
+  geom_point(aes(x = worldclim25m_diff_mean), size = 3) +
+  geom_point(aes(x = worldclim30s_diff_mean), size = 3) +
+  geom_point(aes(x = ggc_diff_mean), size = 3) +
+  scale_color_manual(values = c("yellow", "purple")) +
+  labs(x = "Value", y = "gmted2010") +
+  theme_minimal()
+
+
   
   
   
