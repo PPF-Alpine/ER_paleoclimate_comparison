@@ -22,8 +22,23 @@ delta_diff_long <- delta_t_diff|>
                values_to = "Values")
 
 # visualise the absolute values of dt against elevation
-ggplot(delta_diff_long,aes(x=Values, y=gmted2010,color=Model))+
-  geom_point()+
-  scale_y_continuous(breaks=c(0,min(delta_long$Values),
-                              max(delta_long$Values)))+
-  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+# ggplot(delta_diff_long,aes(x=Values, y=gmted2010,color=Model))+
+#   geom_point()+
+#   scale_y_continuous(breaks=c(0,min(delta_long$Values),
+#                               max(delta_long$Values)))+
+#   theme(axis.text.x = element_text(angle = 90, hjust = 1))
+
+# plot beyer mean and colour according to whether it is in or outside a mountain range
+ggplot(delta_t_diff, aes(x = beyer_diff_mean, y = gmted2010, color = factor(in_mr))) +
+  geom_point(size = 3) +
+  scale_color_manual(values = c("yellow", "purple")) +
+  labs(y = "gmted2010", x = "beyer_diff_mean") +
+  theme_minimal()
+
+  
+  
+  
+  
+  
+  
+  
