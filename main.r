@@ -1,3 +1,16 @@
+#----------------------------------------------------------#
+#
+#           Paleoclimate comparison
+#
+#           main script
+#                 
+#
+#           Author: Eline Rentier 
+#                   2024
+#
+#----------------------------------------------------------#
+
+
 # libraries
 install.packages("tidyverse")
 library("tidyverse")
@@ -15,49 +28,6 @@ delta_t <- read_delim(file_path_dt,locale = locale(decimal_mark = "."))|>janitor
 delta_t_diff <- read_delim(file_path_diff,locale = locale(decimal_mark = "."))|>janitor::clean_names()
 
 
-#Descriptive functions
-names(delta_t)
-names(delta_t_diff)
-typeof(delta_t$mean_dt)
-
-## Summary statistics
-# Filter the dataset to include only rows within mountain ranges, and one only outside mountain ranges
-delta_t_mountain <- delta_t %>%
-  filter(in_mr == 1)
-
-delta_t_lowlands <- delta_t %>%
-  filter(in_mr == 0)
-
-delta_t_diff_mountain <- delta_t_diff %>%
-  filter(in_mr == 1)
-
-delta_t_diff_lowlands <- delta_t_diff %>%
-  filter(in_mr == 0)
-
-#Transpose data
-delta_t_long <- delta_t|>
-  dplyr::select(mean_dt, beyer_dt, chelsa_dt, ecoclimate_dt,paleopgem_dt,worldclim25m_dt,worldclim30s_dt,ggc_dt,gmted2010) |>
-  pivot_longer(cols = -gmted2010,
-               names_to = "Model",
-               values_to = "Values")
-
-delta_t_mr_long <- delta_t_mountain|>
-  dplyr::select(mean_dt, beyer_dt, chelsa_dt, ecoclimate_dt,paleopgem_dt,worldclim25m_dt,worldclim30s_dt,ggc_dt,gmted2010) |>
-  pivot_longer(cols = -gmted2010,
-               names_to = "Model",
-               values_to = "Values")
-
-delta_diff_long <- delta_t_diff|>
-  dplyr::select(beyer_diff_mean, chelsa_diff_mean, ecoclimate_diff_mean,paleopgem_diff_mean,worldclim25m_diff_mean,worldclim30s_diff_mean,ggc_diff_mean,gmted2010) |>
-  pivot_longer(cols = -gmted2010,
-               names_to = "Model",
-               values_to = "Values")
-
-delta_t_diff_mr_long <- delta_t_diff_mountain|>
-  dplyr::select(beyer_diff_mean, chelsa_diff_mean, ecoclimate_diff_mean,paleopgem_diff_mean,worldclim25m_diff_mean,worldclim30s_diff_mean,ggc_diff_mean,gmted2010) |>
-  pivot_longer(cols = -gmted2010,
-               names_to = "Model",
-               values_to = "Values")
 
 ## Plot boxplots for spread of each model
 # dT
