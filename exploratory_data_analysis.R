@@ -18,6 +18,10 @@ names(delta_t)
 names(delta_t_diff)
 typeof(delta_t$mean_dt)
 
+head(delta_t)
+glimpse(delta_t)
+glimpse(delta_t_diff)
+
 # create vector for all columns with dT values
 models_dt <- c("mean_dt", "beyer_dt", "chelsa_dt", "ecoclimate_dt", "paleopgem_dt", "worldclim25m_dt", "worldclim30s_dt", "ggc_dt")
 
