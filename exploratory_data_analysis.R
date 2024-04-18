@@ -17,6 +17,9 @@
 names(delta_t) 
 names(delta_t_diff)
 typeof(delta_t$mean_dt)
+head(delta_t)
+glimpse(delta_t)
+glimpse(delta_t_diff)
 
 #----------------------------------------#
 #       Descriptive statistics
