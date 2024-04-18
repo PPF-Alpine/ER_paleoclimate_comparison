@@ -36,11 +36,11 @@ ggplot(delta_t_diff, aes(y = gmted2010, color = factor(in_mr))) +
 
 # Function to create plot with linear regression
 create_plot <- function(data, x_var, y_var) {
-  ggplot(data, aes_string(x = y_var, y = x_var, color = "factor(in_mr)")) +
+  ggplot(data, aes_string(x = x_var, y = y_var, color = "factor(in_mr)")) +
     geom_point() +
     geom_smooth(method = "lm", se = FALSE) +
     scale_color_manual(values = c("yellow", "purple")) +
-    labs(x = y_var, y = "elevation") +  
+    labs(x = x_var, y = y_var) +  
     theme_minimal()
 }
 
