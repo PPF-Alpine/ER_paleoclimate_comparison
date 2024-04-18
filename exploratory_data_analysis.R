@@ -17,10 +17,14 @@
 names(delta_t) 
 names(delta_t_diff)
 typeof(delta_t$mean_dt)
-
 head(delta_t)
 glimpse(delta_t)
 glimpse(delta_t_diff)
+
+#----------------------------------------#
+#       Descriptive statistics
+#     get NA, min, max, sd, mean
+#----------------------------------------#
 
 # create vector for all columns with dT values
 models_dt <- c("mean_dt", "beyer_dt", "chelsa_dt", "ecoclimate_dt", "paleopgem_dt", "worldclim25m_dt", "worldclim30s_dt", "ggc_dt")
@@ -33,6 +37,7 @@ for (model in models_dt) {
   print(paste("Mean:", mean(delta_t[[model]], na.rm = TRUE)))
   print(paste("SD:", sd(delta_t[[model]], na.rm = TRUE)))
 }
+
 # get na values in these columns
 for (model in models_dt) {
   print(model)
@@ -55,7 +60,38 @@ for (model in models_dt_diff) {
   print(sum(is.na(delta_t_diff[[model]])))
 }
 
-summary(delta_t$mean_dt)
+#----------------------------------------#
+#   look into proxy data (mean_dt)
+#     plot outliers 
+#----------------------------------------#
+summary(delta_t$mean_dt) # max value is very high. Any positive value is suspicious (lgm logically would be colder), so lets check which ones are >0
+delta_t %>%
+  filter(mean_dt > 0) 
+# show the mean_dt value that is >0
+delta_t %>%
+  filter(mean_dt > 0) %>%
+  select(mean_dt)
+
+# plot on a map to see where these values are located, use the column lat and long
+# plot the outline of the world in the background
+world <- map_data("world")
+ggplot() +
+  geom_polygon(data = world, aes(x = long, y = lat, group = group), fill = "grey") +
+  geom_point(data = delta_t %>%
+               filter(mean_dt > 0), aes(x = long, y = lat), color = "red") +
+  theme_minimal()
+
+# show the value of the point.
+ggplot() +
+  geom_polygon(data = world, aes(x = long, y = lat, group = group), fill = "grey") +
+  geom_point(data = delta_t %>%
+               filter(mean_dt > 0), aes(x = long, y = lat), color = "red") +
+  geom_label(data = delta_t %>%
+               filter(mean_dt > 0), aes(x = long, y = lat, label = mean_dt),
+             color = "black", nudge_x = 0.5, check_overlap=TRUE) +
+  theme_minimal()
+
+
 
 ## Summary statistics
 # Filter the dataset to include only rows within mountain ranges, and one only outside mountain ranges
