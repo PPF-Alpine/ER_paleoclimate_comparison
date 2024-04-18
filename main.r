@@ -16,10 +16,10 @@ install.packages("tidyverse")
 library("tidyverse")
 
 #run this is conflicts occure in loading tidyverse
-# library(conflicted)  
-# library(tidyverse)
-# conflict_prefer("filter", "dplyr")
-# conflict_prefer("lag", "dplyr")
+library(conflicted)
+library(tidyverse)
+conflict_prefer("filter", "dplyr")
+conflict_prefer("lag", "dplyr")
  
 # Read the CSV files
 file_path_dt <-("data/Proxy_models_ggc_gmba_dem.csv")
