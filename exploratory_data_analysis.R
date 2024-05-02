@@ -91,7 +91,18 @@ ggplot() +
              color = "black", nudge_x = 0.5, check_overlap=TRUE) +
   theme_minimal()
 
+#----------------------------------------#
+#   Remove outliers from mean_dt
+#----------------------------------------#
+# remove the outliers from the dataset with a value higher than 7
+delta_t_no_outliers <- delta_t %>%
+  filter(mean_dt <= 7)
+delta_t_no_outliers %>% filter(mean_dt>0) %>% select(mean_dt) #check if it worked
 
+#repeat for delta_t_diff
+delta_t_diff_no_outliers <- delta_t_diff %>%
+  filter(mean_dt <= 7)
+delta_t_diff_no_outliers %>% filter(mean_dt>0) %>% select(mean_dt) #check if it worked
 
 ## Summary statistics
 # Filter the dataset to include only rows within mountain ranges, and one only outside mountain ranges
