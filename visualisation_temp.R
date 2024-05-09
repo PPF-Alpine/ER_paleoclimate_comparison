@@ -2,7 +2,7 @@
 #
 #           Paleoclimate comparison
 #
-#           exploratory data analysis
+#           visualisation temperature
 #                 
 #
 #           Author: Eline Rentier 
