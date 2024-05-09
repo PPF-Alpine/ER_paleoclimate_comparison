@@ -91,9 +91,30 @@ ggplot() +
              color = "black", nudge_x = 0.5, check_overlap=TRUE) +
   theme_minimal()
 
+#----------------------------------------#
+#   Remove outliers from mean_dt
+#----------------------------------------#
+# remove the outliers from the dataset with a value higher than 7
+delta_t_no_outliers <- delta_t %>%
+  filter(mean_dt <= 7)
+delta_t_no_outliers %>% filter(mean_dt>0) %>% select(mean_dt) #check if it worked
 
+#repeat for delta_t_diff
+delta_t_diff_no_outliers <- delta_t_diff %>%
+  filter(mean_dt <= 7)
+delta_t_diff_no_outliers %>% filter(mean_dt>0) %>% select(mean_dt) #check if it worked
 
-## Summary statistics
+##############################################
+##############################################
+## For the sake of time, run this if you want it without outliers. 
+#delta_t <- delta_t_no_outliers
+#delta_t_diff <- delta_t_diff_no_outliers
+##############################################
+##############################################
+
+#----------------------------------------#
+#   Summary statistics
+#----------------------------------------#
 # Filter the dataset to include only rows within mountain ranges, and one only outside mountain ranges
 delta_t_mountain <- delta_t %>%
   filter(in_mr == 1)
@@ -114,68 +135,34 @@ delta_t_long <- delta_t|>
                names_to = "Model",
                values_to = "Values")
 
-delta_t_mr_long <- delta_t_mountain|>
-  dplyr::select(mean_dt, beyer_dt, chelsa_dt, ecoclimate_dt,paleopgem_dt,worldclim25m_dt,worldclim30s_dt,ggc_dt,gmted2010) |>
-  pivot_longer(cols = -gmted2010,
-               names_to = "Model",
-               values_to = "Values")
-
 delta_diff_long <- delta_t_diff|>
   dplyr::select(beyer_diff_mean, chelsa_diff_mean, ecoclimate_diff_mean,paleopgem_diff_mean,worldclim25m_diff_mean,worldclim30s_diff_mean,ggc_diff_mean,gmted2010) |>
   pivot_longer(cols = -gmted2010,
                names_to = "Model",
                values_to = "Values")
 
-delta_t_diff_mr_long <- delta_t_diff_mountain|>
+delta_t_diff_lowlands_long <- delta_t_diff_lowlands|>
   dplyr::select(beyer_diff_mean, chelsa_diff_mean, ecoclimate_diff_mean,paleopgem_diff_mean,worldclim25m_diff_mean,worldclim30s_diff_mean,ggc_diff_mean,gmted2010) |>
   pivot_longer(cols = -gmted2010,
                names_to = "Model",
                values_to = "Values")
 
-#----------------------------------------------------------#
-#       Plotting  summary data
-#----------------------------------------------------------#
+delta_t_diff_mountain_long <- delta_t_diff_mountain|>
+  dplyr::select(beyer_diff_mean, chelsa_diff_mean, ecoclimate_diff_mean,paleopgem_diff_mean,worldclim25m_diff_mean,worldclim30s_diff_mean,ggc_diff_mean,gmted2010) |>
+  pivot_longer(cols = -gmted2010,
+               names_to = "Model",
+               values_to = "Values")
 
-## scatterplots
-# plot beyer mean and colour according to whether it is in or outside a mountain range
-ggplot(delta_t_diff, aes(x = beyer_diff_mean, y = gmted2010, color = factor(in_mr))) +
-  geom_point(size = 3) +
-  scale_color_manual(values = c("yellow", "purple")) +
-  labs(y = "elevation", x = "beyer_diff_mean") +
-  theme_minimal()
+delta_t_lowlands_long <- delta_t_lowlands|> 
+  dplyr::select(mean_dt, beyer_dt, chelsa_dt, ecoclimate_dt,paleopgem_dt,worldclim25m_dt,worldclim30s_dt,ggc_dt,gmted2010) |>
+  pivot_longer(cols = -gmted2010,
+               names_to = "Model",
+               values_to = "Values")
 
-# now plot for all models
-ggplot(delta_t_diff, aes(y = gmted2010, color = factor(in_mr))) +
-  geom_point(aes(x = beyer_diff_mean), size = 3) +
-  geom_point(aes(x = chelsa_diff_mean), size = 3) +
-  geom_point(aes(x = ecoclimate_diff_mean), size = 3) +
-  geom_point(aes(x = paleopgem_diff_mean), size = 3) +
-  geom_point(aes(x = worldclim25m_diff_mean), size = 3) +
-  geom_point(aes(x = worldclim30s_diff_mean), size = 3) +
-  geom_point(aes(x = ggc_diff_mean), size = 3) +
-  scale_color_manual(values = c("yellow", "purple")) +
-  labs(x = "difference model-proxy", y = "elevation") +
-  theme_minimal()
-
-## Plot boxplots for spread of each model
-# dT
-ggplot(delta_t_mr_long, aes(x = Model, y = Values, fill = Model)) +
-  geom_boxplot() +
-  scale_fill_manual(values = c("mean_dt" = "red", "other_models" = "blue")) +  # Specify colors for "mean_dt" and other models
-  labs(x = "Model", y = "ΔT") +
-  ggtitle("ΔT present-lgm for proxies within mountain ranges") +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
-
-ggplot(delta_t_diff_mr_long, aes(x = Model, y = Values, fill = Model)) +
-  geom_boxplot() +
-  scale_fill_manual(values = c("other_models" = "blue")) + 
-  labs(x = "Model", y = "ΔT") +
-  ggtitle("ΔT diff (model-proxy value) within mountain ranges") +
-  geom_hline(yintercept = 0, color = "red", linetype = "solid") +  # Add horizontal red line at y = 0
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
-
-
+delta_t_mountain_long <- delta_t_mountain|> 
+  dplyr::select(mean_dt, beyer_dt, chelsa_dt, ecoclimate_dt,paleopgem_dt,worldclim25m_dt,worldclim30s_dt,ggc_dt,gmted2010) |>
+  pivot_longer(cols = -gmted2010,
+               names_to = "Model",
+               values_to = "Values")
 
 
