@@ -13,3 +13,11 @@ library("tidyverse")
 library("plotly")
 library("dplyr")
 
+
+#run this if conflicts occur in loading tidyverse
+# library(conflicted)  
+# library(tidyverse)
+# conflict_prefer("filter", "dplyr")
+# conflict_prefer("lag", "dplyr")
+
+
