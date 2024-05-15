@@ -37,6 +37,14 @@ new_names_diff <- c("chelsa_diff_mean" = "chelsa", "worldclim25m_diff_mean" = "w
 
 new_names <- c("chelsa_dt" = "chelsa", "worldclim25m_dt" = "worldclim", "beyer_dt" = "beyer", "ecoclimate_dt" = "ecoclimate", "paleopgem_dt" = "paleopgem", "ggc_dt" = "ggc", "mean_dt" = "proxy")
 new_names_np <- c("chelsa_dt" = "chelsa", "worldclim25m_dt" = "worldclim", "beyer_dt" = "beyer", "ecoclimate_dt" = "ecoclimate", "paleopgem_dt" = "paleopgem", "ggc_dt" = "ggc")
+
+# how many entries in delta_t are "within" and "outside" mr AND have variable name mean_dt
+temp_data %>% 
+  filter(model == "mean_dt") %>% 
+  group_by(in_mr) %>% 
+  summarise(n = n())
+
+
 #----------------------------------------------------------#
 #      Histograms
 #----------------------------------------------------------#
