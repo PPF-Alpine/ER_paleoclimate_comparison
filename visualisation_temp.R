@@ -18,14 +18,14 @@ devtools::install_github("psyteachr/introdataviz")
 #       Prepare data
 #----------------------------------------------------------#
 temp_data <- delta_t %>% 
-  select(mean_dt, beyer_dt, chelsa_dt, ecoclimate_dt,paleopgem_dt,worldclim25m_dt,ggc_dt,lat, gmted2010, in_mr) %>%
-  pivot_longer(cols = -c(in_mr,lat, gmted2010), names_to = "model", values_to = "values")%>% 
+  select(mean_dt, beyer_dt, chelsa_dt, ecoclimate_dt,paleopgem_dt,worldclim25m_dt,ggc_dt,lat,long, gmted2010, in_mr) %>%
+  pivot_longer(cols = -c(in_mr,lat,long, gmted2010), names_to = "model", values_to = "values")%>% 
   mutate(in_mr=recode(in_mr, `0`="outside", `1`="within")) %>%
   filter(in_mr %in% c("outside", "within"))
 
 temp_diff_data <- delta_t_diff %>% 
-  select(beyer_diff_mean, chelsa_diff_mean, ecoclimate_diff_mean,paleopgem_diff_mean,worldclim25m_diff_mean,ggc_diff_mean,lat, gmted2010, in_mr) %>% 
-  pivot_longer(cols = -c(in_mr,lat, gmted2010), names_to = "model", values_to = "values") %>% 
+  select(beyer_diff_mean, chelsa_diff_mean, ecoclimate_diff_mean,paleopgem_diff_mean,worldclim25m_diff_mean,ggc_diff_mean,lat,long, gmted2010, in_mr) %>% 
+  pivot_longer(cols = -c(in_mr,lat,long, gmted2010), names_to = "model", values_to = "values") %>% 
   mutate(in_mr=recode(in_mr, `0`="outside", `1`="within")) %>%
   filter(in_mr %in% c("outside", "within"))
 
@@ -33,9 +33,9 @@ model_order_diff <- c("chelsa_diff_mean","worldclim25m_diff_mean","beyer_diff_me
 
 model_order <- c("chelsa_dt","worldclim25m_dt","beyer_dt", "ecoclimate_dt", "paleopgem_dt", "ggc_dt", "mean_dt")
 
-new_names_diff <- c("chelsa_diff_mean" = "chelsa", "worldclim25m_diff_mean" = "worldclim", "beyer_diff_mean" = "beyer", "ecoclimate_diff_mean" = "ecoclimate", "paleopgem_diff_mean" = "paleopgem", "ggc_diff_mean" = "ggc")
+new_names_diff <- c("chelsa_diff_mean" = "CHELSA", "worldclim25m_diff_mean" = "WORLDCLIM", "beyer_diff_mean" = "BEYER", "ecoclimate_diff_mean" = "ECOCLIMATE", "paleopgem_diff_mean" = "PALEO-PGEM", "ggc_diff_mean" = "GGC")
 
-new_names <- c("chelsa_dt" = "chelsa", "worldclim25m_dt" = "worldclim", "beyer_dt" = "beyer", "ecoclimate_dt" = "ecoclimate", "paleopgem_dt" = "paleopgem", "ggc_dt" = "ggc", "mean_dt" = "proxy")
+new_names <- c("chelsa_dt" = "CHELSA", "worldclim25m_dt" = "WORLDCLIM", "beyer_dt" = "BEYER", "ecoclimate_dt" = "ECOCLIMATE", "paleopgem_dt" = "PALEO-PGEM", "ggc_dt" = "GGC", "mean_dt" = "PROXY")
 new_names_np <- c("chelsa_dt" = "chelsa", "worldclim25m_dt" = "worldclim", "beyer_dt" = "beyer", "ecoclimate_dt" = "ecoclimate", "paleopgem_dt" = "paleopgem", "ggc_dt" = "ggc")
 
 # how many entries in delta_t are "within" and "outside" mr AND have variable name mean_dt
@@ -111,13 +111,16 @@ ggplot(temp_diff_data, aes(lat, values, color = in_mr)) +
 
 # chelsa
 ggplot(filter(temp_diff_data, model == "chelsa_diff_mean"), aes(lat, values, color = in_mr)) + 
-  geom_point(alpha = .5, position = "identity") + 
+  geom_point(alpha = 1, position = "identity") + 
   ggtitle("ΔT difference (model-proxy) latitudinal distribution chelsa") + 
   labs(x = "Latitude", y = "ΔT (°C)") + 
   geom_hline(yintercept = 0, color = "red", linetype = "solid") +  # Add horizontal red line at y = 0
-  scale_fill_manual(values = c("within" = "orange", "outside" = "blue")) +  # Specify colors for "within" and "outside"
-  geom_smooth(method=lm)
-  theme_minimal()
+  scale_color_manual(values = c("within" = "#FF5722", "outside" = "#607D8B")) +  # Specify colors for "within" and "outside"
+  geom_smooth(method=lm, level = 0.95) +
+  theme_minimal()+
+  theme(axis.text.x = element_text(size = 12), 
+          axis.text.y = element_text(size = 12),
+          legend.title = element_blank())
 
 # ggc
 ggplot(filter(temp_diff_data, model == "ggc_diff_mean"), aes(lat, values, color = in_mr)) + 
@@ -155,13 +158,45 @@ ggplot(filter(temp_diff_data, in_mr == "within"), aes(x=factor(model, levels = m
 
 # temp_diff_data, all, within and outside 
 ggplot(temp_diff_data, aes(x=factor(model, levels = model_order_diff), values, fill = in_mr)) + 
-  geom_boxplot(alpha = .5, position = "dodge") + 
+  geom_boxplot(alpha = 0.8, position = "dodge") + 
   ggtitle("ΔT difference (model-proxy) distribution within and outside mountain ranges") + 
-  labs(x = "Model", y = "ΔT (°C)") + 
-  geom_hline(yintercept = 0, color = "red", linetype = "solid") +  # Add horizontal black line at y = 0
-  scale_fill_manual(values = c("within" = "orange", "outside" = "blue")) +  # Specify colors for "within" and "outside"
+  labs(x = "", y = "ΔT difference (°C)") + 
+  geom_hline(yintercept = 0, color = "red", linetype = "solid") + 
+  scale_fill_manual(values = c("within" = "#FF5722", "outside" = "#607D8B")) + 
   scale_x_discrete(labels = new_names_diff) +
-  theme_minimal()
+  theme_minimal() +
+  theme(axis.text.x = element_text(size = 12), 
+        axis.text.y = element_text(size = 12),
+        legend.title = element_blank())
+
+#all models in one plot (6 subplots)
+# Set the order of the models
+model_order <- c("chelsa_diff_mean", "ecoclimate_diff_mean","worldclim25m_diff_mean", 
+                  "paleopgem_diff_mean","beyer_diff_mean", "ggc_diff_mean")
+
+# Filter the data
+filtered_data <- filter(temp_diff_data, model %in% model_order)
+
+# Set the factor levels for 'model'
+filtered_data$model <- factor(filtered_data$model, levels = model_order)
+
+# Create the plot
+ggplot(filtered_data, aes(lat, values, color = in_mr)) + 
+  geom_point(alpha = 1, position = "identity") + 
+  geom_hline(yintercept = 0, color = "red", linetype = "solid") + 
+  scale_color_manual(values = c("within" = "#FF5722", "outside" = "#607D8B")) + 
+  geom_smooth(method=lm, level = 0.95) +
+  facet_wrap(~model, ncol = 2, scales = "free_y") + 
+  labs(x = "Latitude", y = "ΔT difference (°C)") + 
+  theme_minimal() +
+  theme(axis.text.x = element_text(size = 12), 
+        axis.text.y = element_text(size = 12),
+        legend.title = element_blank(),
+        strip.background = element_blank(),
+        strip.text.x = element_blank(), #element_text(size = 12)) #  removes text from titles
+        panel.spacing = unit(1, "lines"),  # Adjust the amount of space as needed
+        panel.background= element_rect(fill = "grey99"), # Add a grey background to the plot
+        panel.border = element_rect(colour="white", fill=N))
 
 
 #----------------------------------------------------------#
@@ -217,15 +252,17 @@ ggplot(temp_diff_data, aes(x=factor(model, levels = model_order_diff), values, f
   scale_x_discrete(labels = new_names_diff) +
   theme_minimal()
 
+#----------------------------------------------------------#
+#      World map
+#----------------------------------------------------------#
 
+# create a world map plotting the temp data of chelsa
+world <- map_data("world")
 
-
-
-
-
-
-
-
+# plot the shapes in gmba, mountain range
+ggplot() + 
+  geom_sf(data=gmba)+
+  theme_minimal()
 
 
 
