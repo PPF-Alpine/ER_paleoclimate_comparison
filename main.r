@@ -22,10 +22,13 @@ file_path_diff <- ("data/dt_difference.csv")
 delta_t <- read_delim(file_path_dt, delim = ",", locale = locale(decimal_mark = "."))|>janitor::clean_names() 
 delta_t_diff <- read_delim(file_path_diff, delim = ",", locale = locale(decimal_mark = "."))|>janitor::clean_names()
 
-### Also delta_t and  delta_t_diff are close to having the same data and structure, why not one file?
-
-
-
+# read the GMBA .shp
+file_path_gmba <-("data/GMBA.shp")
+gmba <- sf::st_read(paste(file_path_gmba, sep = "/"))|>
+  rename(mountain_range = MapName)|>
+  rename(area_size = Area)|>
+  mutate(area_size = round(area_size, 0))|>
+  mutate(log_area = log(area_size))
 
 
 

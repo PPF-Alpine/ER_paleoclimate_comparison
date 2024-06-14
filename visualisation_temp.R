@@ -183,10 +183,10 @@ filtered_data$model <- factor(filtered_data$model, levels = model_order)
 # Create the plot
 ggplot(filtered_data, aes(lat, values, color = in_mr)) + 
   geom_point(alpha = 1, position = "identity") + 
-  geom_hline(yintercept = 0, color = "red", linetype = "solid") + 
+  geom_hline(yintercept = 0, color = "black", linetype = "dashed") + 
   scale_color_manual(values = c("within" = "#FF5722", "outside" = "#607D8B")) + 
   geom_smooth(method=lm, level = 0.95) +
-  facet_wrap(~model, ncol = 2, scales = "free_y") + 
+  facet_wrap(~model, ncol = 2, scales = "fixed") + 
   labs(x = "Latitude", y = "ΔT difference (°C)") + 
   theme_minimal() +
   theme(axis.text.x = element_text(size = 12), 
@@ -196,7 +196,28 @@ ggplot(filtered_data, aes(lat, values, color = in_mr)) +
         strip.text.x = element_blank(), #element_text(size = 12)) #  removes text from titles
         panel.spacing = unit(1, "lines"),  # Adjust the amount of space as needed
         panel.background= element_rect(fill = "grey99"), # Add a grey background to the plot
-        panel.border = element_rect(colour="white", fill=N))
+        panel.border = element_rect(colour="white", fill=NA))
+#----------------------------------------------------------#
+#      Significance
+#----------------------------------------------------------#
+# Create an empty list to store the summaries
+model_summaries <- list()
+
+# Loop through each level of the model factor
+for (m in levels(filtered_data$model)) {
+  # Filter the data for the current model
+  model_data <- filtered_data[filtered_data$model == m, ]
+  
+  # Fit the linear model for the current model
+  model_fit <- lm(values ~ lat + in_mr, data = model_data)
+  
+  # Store the summary of the model in the list
+  model_summaries[[m]] <- summary(model_fit)
+}
+
+# To view the summary for a specific model, you can use:
+model_summaries[["ggc_diff_mean"]]
+
 
 
 #----------------------------------------------------------#
