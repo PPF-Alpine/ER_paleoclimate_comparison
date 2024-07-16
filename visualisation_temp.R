@@ -223,27 +223,19 @@ model_summaries[["ggc_diff_mean"]]
 #----------------------------------------------------------#
 #      violinplots
 #----------------------------------------------------------#
-## TODO: change labelling and order of models
-
-# temp_diff_data, all models, within mountains 
-ggplot(filter(temp_diff_data, in_mr == "within"), aes(x=factor(model, levels = model_order_diff), values, fill = model)) + 
-  geom_violin(alpha = .5, position = "identity") + 
-  #geom_jitter(width = 0.2, alpha = 0.5) + 
-  ggtitle("ΔT difference (model-proxy) distribution within mountain ranges") + 
-  labs(x = "Model", y = "ΔT (°C)") + 
-  scale_x_discrete(labels = new_names) +
-  geom_hline(yintercept = 0, color = "red", linetype = "solid") +  # Add horizontal red line at y = 0
-  theme_minimal()
 
 # temp_diff_data, all, within and outside 
-ggplot(temp_diff_data, aes(model, values, fill = in_mr)) + 
-  geom_violin(alpha = .5, position = "dodge") + 
+ggplot(temp_diff_data, aes(x=factor(model, levels = model_order_diff), values, fill = in_mr)) + 
+  geom_violin(alpha = 0.8, position = "dodge") + 
   ggtitle("ΔT difference (model-proxy) distribution within and outside mountain ranges") + 
-  labs(x = "Model", y = "ΔT (°C)") + 
-  geom_hline(yintercept = 0, color = "red", linetype = "solid") +  # Add horizontal black line at y = 0
-  scale_fill_manual(values = c("within" = "orange", "outside" = "blue")) +  # Specify colors for "within" and "outside"
-  theme_minimal()
-
+  labs(x = "", y = "ΔT difference (°C)") + 
+  geom_hline(yintercept = 0, color = "red", linetype = "solid") + 
+  scale_fill_manual(values = c("within" = "#FF5722", "outside" = "#607D8B")) + 
+  scale_x_discrete(labels = new_names_diff) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(size = 12), 
+        axis.text.y = element_text(size = 12),
+        legend.title = element_blank())
 
 #----------------------------------------------------------#
 #      violin-boxplots
@@ -259,7 +251,6 @@ ggplot(filter(temp_diff_data, in_mr == "within"), aes(x=factor(model, levels = m
   scale_fill_discrete(name = " ",labels = new_names_diff) +
   geom_hline(yintercept = 0, color = "red", linetype = "solid") +  # Add horizontal red line at y = 0
   theme_minimal()
-
 
 # temp_diff_data, all, within and outside 
 # ERROR: BOXPOTS ARE NOT CENTERED AND CENTERING FUNCTION IS NOT SUPPORTED IN GEOM_BOXPLOT
@@ -285,7 +276,44 @@ ggplot() +
   geom_sf(data=gmba)+
   theme_minimal()
 
+#----------------------------------------------------------#
+#      Beeswarm plot
+#----------------------------------------------------------#
+install.packages('ggbeeswarm')
+library(ggbeeswarm)
 
+ggplot(temp_diff_data, aes(x=factor(model, levels = model_order_diff), y=values, color = in_mr)) + 
+  geom_beeswarm(alpha = 0.8, dodge.width = 0.8) + 
+  ggtitle("ΔT difference (model-proxy) distribution within and outside mountain ranges") + 
+  labs(x = "", y = "ΔT difference (°C)") + 
+  geom_hline(yintercept = 0, color = "red", linetype = "solid") + 
+  scale_color_manual(values = c("within" = "#FF5722", "outside" = "#607D8B")) + 
+  scale_x_discrete(labels = new_names_diff) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(size = 12), 
+        axis.text.y = element_text(size = 12),
+        legend.title = element_blank())
 
+#----------------------------------------------------------#
+#      raincloud plot
+#----------------------------------------------------------#
 
+# Prepare the data
+temp_diff_data <- temp_diff_data %>%
+  mutate(model = factor(model, levels = model_order_diff))
 
+# Create the raincloud plot
+ggplot(temp_diff_data, aes(x = model, y = values, fill = in_mr)) +
+  geom_half_violin(position = position_nudge(x = 0.2, y = 0), alpha = 0.5, side = "r", trim = FALSE) +
+  geom_point(aes(color = in_mr), position = position_jitter(width = 0.15), size = 1, alpha = 0.6) +
+  geom_boxplot(width = 0.1, outlier.shape = NA, alpha = 0.5, position = position_nudge(x = -0.2)) +
+  ggtitle("ΔT difference (model-proxy) distribution within and outside mountain ranges") +
+  labs(x = "", y = "ΔT difference (°C)") +
+  geom_hline(yintercept = 0, color = "red", linetype = "solid") +
+  scale_fill_manual(values = c("within" = "#FF5722", "outside" = "#607D8B")) +
+  scale_color_manual(values = c("within" = "#FF5722", "outside" = "#607D8B")) +
+  scale_x_discrete(labels = new_names_diff) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(size = 12),
+        axis.text.y = element_text(size = 12),
+        legend.title = element_blank())
