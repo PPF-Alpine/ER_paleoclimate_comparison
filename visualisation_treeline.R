@@ -13,11 +13,6 @@
 #----------------------------------------------------------#
 #       Prepare data
 #----------------------------------------------------------#
-# Read the Excel file
-file_path_tree <- "data/zonal_tree_all.xls"
-file_path_xy <- "data/mountains_xy.xls"
-mountains_xy <- read_excel(file_path_xy)
-
 # Get the names of all sheets in the Excel file
 sheet_names <- excel_sheets(file_path_tree)
 
@@ -28,7 +23,6 @@ for (i in seq_along(sheet_names)) {
 
 # Add a new column to each data frame to indicate the source
 zonal_treeline_chelsa$source <- "chelsa"
-#zonal_treeline_lr_lgm$source <- "lr"
 zonal_treeline_beyer$source <- "beyer"
 zonal_treeline_ecoclimate$source <- "ecoclimate"
 zonal_treeline_pgem$source <- "pgem"
@@ -38,9 +32,12 @@ zonal_treeline_worldclim$source <- "worldclim"
 #combine all data frames
 zonal_treeline_all <- bind_rows(zonal_treeline_chelsa, zonal_treeline_beyer, zonal_treeline_ecoclimate, zonal_treeline_pgem,zonal_treeline_worldclim, zonal_treeline_ggc)
 
-# export zonal_treeline_all as csv
-write.csv(zonal_treeline_all, "data/zonal_treeline_all.csv")
+# # export zonal_treeline_all as csv
+# write.csv(zonal_treeline_all, "data/zonal_treeline_all.csv")
 
+#----------------------------------------------------------#
+#       Filter data
+#----------------------------------------------------------#
 # Filter the data to include only the levels of "Level_03" that are present in all sources
 mr_in_all <- zonal_treeline_all %>%
   group_by(Level_03) %>%
@@ -52,7 +49,7 @@ mr_in_both <- zonal_treeline_all %>%
   filter(all(c("chelsa", "ggc") %in% source)) %>% 
   ungroup()
 
-# calculate range and save as csv
+# calculate range 
 range_treelines <- zonal_treeline_all %>%
   group_by(Level_03) %>%
   summarise(
@@ -62,7 +59,8 @@ range_treelines <- zonal_treeline_all %>%
     Range = Max - (Min), # Calculate the range
     Models = toString(unique(source))
   )
-write.csv(range_treelines, "data/range_treelines.csv")
+## save ranges as csv
+#write.csv(range_treelines, "data/range_treelines.csv")
 
 #Add lat long data from mountains_xy to zonal_treeline_all based on their common names in MapName and Level_03 respectively
 zonal_treeline_all <- left_join(zonal_treeline_all, mountains_xy[, c("MapName", "lat", "long")], by = c("Level_03"="MapName"))
@@ -97,8 +95,6 @@ ggplot(zonal_treeline_all, aes(x = lat, y = MEAN, group = source)) +
         panel.background= element_rect(fill = "grey99"), # Add a grey background to the plot
         panel.border = element_rect(colour="white", fill=NA))
 
-# Assuming 'zonal_treeline_all' is your data frame and it has 'lat' and 'Level_03' columns
-
 # Create a data frame with unique Level_03 and corresponding latitudes
 unique_levels <- unique(zonal_treeline_all[, c("Level_03", "lat")])
 
@@ -129,17 +125,6 @@ ggplot(zonal_treeline_all, aes(x = Level_03_ordered, y = MEAN, group = source)) 
 #----------------------------------------------------------#
 #      pointplot with range
 #----------------------------------------------------------#
-# Create the boxplots ACCIDENTALLY VIS THE SPREAD OF MIN MAX SD MEAN
-# reshaped_data <- zonal_treeline_all %>%
-#   select(Level_03, MIN, MAX, MEAN, STD) %>%
-#   pivot_longer(cols = c(MIN, MAX, MEAN, STD), names_to = "Statistic", values_to = "Value")
-# 
-# ggplot(reshaped_data, aes(x = Level_03, y = Value, fill = Statistic)) +
-#   geom_boxplot() +
-#   labs(x = "Mountain Range", y = "Value") +
-#   facet_wrap(~ Statistic, scales = "free") +
-#   theme_minimal() +
-#   theme(axis.text.x = element_text(angle = 90, hjust = 1))
 
 # elevation vs mountains ordered by lat on x axis all models
 ggplot(zonal_treeline_all, aes(x = Level_03_ordered, y = MEAN, group = source)) +
@@ -175,7 +160,7 @@ ggplot(zonal_treeline_all, aes(x = Level_03_ordered, y = source)) +
         panel.border = element_rect(colour="white", fill=NA))+
   scale_y_discrete(expand = c(1, 0))
 
-# all
+# all flipped orientation
 ggplot(zonal_treeline_all, aes(y = Level_03, x = MEAN, color = source)) +
   geom_point() +  # Plot the mean values
   geom_errorbarh(aes(xmin = MIN, xmax = MAX), height = 0.2) +  # Add horizontal error bars for the range
@@ -192,7 +177,7 @@ ggplot(zonal_treeline_all, aes(y = Level_03, x = MEAN, color = source)) +
         panel.background= element_rect(fill = "grey99"), # Add a grey background to the plot
         panel.border = element_rect(colour="white", fill=NA))
 
-# all
+# all mountains with data for all models
 ggplot(mr_in_all, aes(y = Level_03, x = MEAN, color = source)) +
   geom_point() +  # Plot the mean values
   geom_errorbarh(aes(xmin = MIN, xmax = MAX), height = 0.2) +  # Add horizontal error bars for the range
@@ -200,7 +185,7 @@ ggplot(mr_in_all, aes(y = Level_03, x = MEAN, color = source)) +
   ggtitle("All mountain ranges with data for all models") +
   theme_minimal()
 
-# chelsa
+# all mountains with data for chelsa
 ggplot(zonal_treeline_chelsa, aes(y = Level_03, x = MEAN)) +
   geom_point() +  # Plot the mean values
   geom_errorbarh(aes(xmin = MIN, xmax = MAX), height = 0.2) +  # Add horizontal error bars for the range
@@ -208,7 +193,7 @@ ggplot(zonal_treeline_chelsa, aes(y = Level_03, x = MEAN)) +
   ggtitle("Chelsa") +
   theme_minimal()
 
-# ggc
+# all mountains with data for ggc
 ggplot(zonal_treeline_ggc, aes(y = Level_03, x = MEAN)) +
   geom_point() +  # Plot the mean values
   geom_errorbarh(aes(xmin = MIN, xmax = MAX), height = 0.2) +  # Add horizontal error bars for the range
@@ -216,7 +201,7 @@ ggplot(zonal_treeline_ggc, aes(y = Level_03, x = MEAN)) +
   ggtitle("ggc") +
   theme_minimal()
 
-# chelsa and ggc 
+# all mountains with data for chelsa and ggc 
 ggplot(mr_in_both %>% filter(source %in% c("chelsa", "ggc")), aes(y = Level_03, x = MEAN, color = source)) +
   geom_point() +  # Plot the mean values
   geom_errorbarh(aes(xmin = MIN, xmax = MAX), height = 0.2) +  # Add horizontal error bars for the range
@@ -269,7 +254,7 @@ ggplot(mean_diff, aes(x = mean_diff, y = Level_03, fill = color)) +
 #----------------------------------------------------------#
 #      boxplot
 #----------------------------------------------------------#
-# spread of mean accross all mountain ranges, compared for each model
+# spread of mean across all mountain ranges, compared for each model
 ggplot(zonal_treeline_all, aes(x = source, y = MEAN, fill = source)) +
   geom_boxplot() +
   labs(x = "Model", y = "Mean elevation") +
