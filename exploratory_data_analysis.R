@@ -72,6 +72,12 @@ delta_t %>%
   filter(mean_dt > 0) %>%
   select(mean_dt)
 
+# Determine how many proxies in delta_t are "within" and "outside" mr AND have variable name mean_dt
+temp_data %>% 
+  filter(model == "mean_dt") %>% 
+  group_by(in_mr) %>% 
+  summarise(n = n())
+
 # plot on a map to see where these values are located, use the column lat and long
 # plot the outline of the world in the background
 world <- map_data("world")
@@ -104,65 +110,9 @@ delta_t_diff_no_outliers <- delta_t_diff %>%
   filter(mean_dt <= 7)
 delta_t_diff_no_outliers %>% filter(mean_dt>0) %>% select(mean_dt) #check if it worked
 
-##############################################
-##############################################
-## For the sake of time, run this if you want it without outliers. 
+
+## run this if you want to continue without outliers. 
 #delta_t <- delta_t_no_outliers
 #delta_t_diff <- delta_t_diff_no_outliers
-##############################################
-##############################################
-
-#----------------------------------------#
-#   Summary statistics
-#----------------------------------------#
-# Filter the dataset to include only rows within mountain ranges, and one only outside mountain ranges
-delta_t_mountain <- delta_t %>%
-  filter(in_mr == 1)
-
-delta_t_lowlands <- delta_t %>%
-  filter(in_mr == 0)
-
-delta_t_diff_mountain <- delta_t_diff %>%
-  filter(in_mr == 1)
-
-delta_t_diff_lowlands <- delta_t_diff %>%
-  filter(in_mr == 0)
-
-#Transpose data to make plotting easier
-delta_t_long <- delta_t|>
-  dplyr::select(mean_dt, beyer_dt, chelsa_dt, ecoclimate_dt,paleopgem_dt,worldclim25m_dt,worldclim30s_dt,ggc_dt,gmted2010) |>
-  pivot_longer(cols = -gmted2010,
-               names_to = "Model",
-               values_to = "Values")
-
-delta_diff_long <- delta_t_diff|>
-  dplyr::select(beyer_diff_mean, chelsa_diff_mean, ecoclimate_diff_mean,paleopgem_diff_mean,worldclim25m_diff_mean,worldclim30s_diff_mean,ggc_diff_mean,gmted2010) |>
-  pivot_longer(cols = -gmted2010,
-               names_to = "Model",
-               values_to = "Values")
-
-delta_t_diff_lowlands_long <- delta_t_diff_lowlands|>
-  dplyr::select(beyer_diff_mean, chelsa_diff_mean, ecoclimate_diff_mean,paleopgem_diff_mean,worldclim25m_diff_mean,worldclim30s_diff_mean,ggc_diff_mean,gmted2010) |>
-  pivot_longer(cols = -gmted2010,
-               names_to = "Model",
-               values_to = "Values")
-
-delta_t_diff_mountain_long <- delta_t_diff_mountain|>
-  dplyr::select(beyer_diff_mean, chelsa_diff_mean, ecoclimate_diff_mean,paleopgem_diff_mean,worldclim25m_diff_mean,worldclim30s_diff_mean,ggc_diff_mean,gmted2010) |>
-  pivot_longer(cols = -gmted2010,
-               names_to = "Model",
-               values_to = "Values")
-
-delta_t_lowlands_long <- delta_t_lowlands|> 
-  dplyr::select(mean_dt, beyer_dt, chelsa_dt, ecoclimate_dt,paleopgem_dt,worldclim25m_dt,worldclim30s_dt,ggc_dt,gmted2010) |>
-  pivot_longer(cols = -gmted2010,
-               names_to = "Model",
-               values_to = "Values")
-
-delta_t_mountain_long <- delta_t_mountain|> 
-  dplyr::select(mean_dt, beyer_dt, chelsa_dt, ecoclimate_dt,paleopgem_dt,worldclim25m_dt,worldclim30s_dt,ggc_dt,gmted2010) |>
-  pivot_longer(cols = -gmted2010,
-               names_to = "Model",
-               values_to = "Values")
 
 
