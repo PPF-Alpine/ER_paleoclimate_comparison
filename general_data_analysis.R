@@ -14,16 +14,16 @@
 ## create regression lines
 # Filter data for in_mr = 1 and fit linear regression
 regression_1 <- lm(gmted2010 ~ beyer_diff_mean + chelsa_diff_mean + ecoclimate_diff_mean +
-                     paleopgem_diff_mean + worldclim25m_diff_mean + worldclim30s_diff_mean + ggc_diff_mean,
+                     paleopgem_diff_mean + worldclim25m_diff_mean + ggc_diff_mean,
                    data = filter(delta_t_diff, in_mr == 1))
 
 # Filter data for in_mr = 0 and fit linear regression
 regression_0 <- lm(gmted2010 ~ beyer_diff_mean + chelsa_diff_mean + ecoclimate_diff_mean +
-                     paleopgem_diff_mean + worldclim25m_diff_mean + worldclim30s_diff_mean + ggc_diff_mean,
+                     paleopgem_diff_mean + worldclim25m_diff_mean + ggc_diff_mean,
                    data = filter(delta_t_diff, in_mr == 0))
 # Fit linear regression over all points
 regression_all <- lm(gmted2010 ~ beyer_diff_mean + chelsa_diff_mean + ecoclimate_diff_mean +
-                       paleopgem_diff_mean + worldclim25m_diff_mean + worldclim30s_diff_mean + ggc_diff_mean,
+                       paleopgem_diff_mean + worldclim25m_diff_mean + ggc_diff_mean,
                      data = delta_t_diff)
 # Plotting
 ggplot(delta_t_diff, aes(y = gmted2010, color = factor(in_mr))) +
@@ -49,8 +49,7 @@ plots <- list()
 
 # Columns to iterate over
 columns <- c("beyer_diff_mean", "chelsa_diff_mean", "ecoclimate_diff_mean",
-             "paleopgem_diff_mean", "worldclim25m_diff_mean",
-             "worldclim30s_diff_mean", "ggc_diff_mean")
+             "paleopgem_diff_mean", "worldclim25m_diff_mean", "ggc_diff_mean")
 
 # Create plots for each column
 for (col in columns) {

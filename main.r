@@ -10,24 +10,8 @@
 #
 #----------------------------------------------------------#
 
+# Run "required_packages.R" to install and load the necessary packages  
 
-#----------------------------------------------------------#
-# 1. Load packages -----
-#----------------------------------------------------------#
-
-
-# libraries
-# install.packages("tidyverse") # SF you dont have to install again after you have done it
-library("tidyverse")
-
-## SF: When calling a function, always specify the package by dplyr:: e.g. that way you wont have to specify this here
-#run this if conflicts occur in loading tidyverse
-# library(conflicted)  
-# library(tidyverse)
-# conflict_prefer("filter", "dplyr")
-# conflict_prefer("lag", "dplyr")
-
- 
 #----------------------------------------------------------#
 # 2. Load data -----
 #----------------------------------------------------------#
