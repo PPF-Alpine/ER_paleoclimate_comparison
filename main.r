@@ -13,7 +13,7 @@
 # Run "required_packages.R" to install and load the necessary packages  
 
 #----------------------------------------------------------#
-# 2. Load data -----
+# Load data -----
 #----------------------------------------------------------#
 
 # Read the CSV files

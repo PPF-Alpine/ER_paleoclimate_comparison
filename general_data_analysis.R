@@ -10,7 +10,6 @@
 #
 #----------------------------------------------------------#
 
-
 ## create regression lines
 # Filter data for in_mr = 1 and fit linear regression
 regression_1 <- lm(gmted2010 ~ beyer_diff_mean + chelsa_diff_mean + ecoclimate_diff_mean +
