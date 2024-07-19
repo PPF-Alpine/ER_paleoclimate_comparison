@@ -74,16 +74,17 @@ In addition, you will need the following two datasets:
 ### Derived/produced data
 Data products from our analysis are stored in the Data folder. This data is ours and needs to be credited when used for other research:
 
-```delta_t``` 
-		description
+- delta_t
+  	- description
   
-```delta_t_diff```
-		description
+- delta_t_diff
+  	- description
   
-	```mountains_xy```
-		description
+- mountains_xy
+  	- description
   
-	```TO ADD: suzettes biome```
+- **TO ADD: suzettes biome**
+  	- description
  
 # Funding
 This research has been developed for the [PPF-Alpine project](https://mountainsinmotion.w.uib.no/) and is funded by the [Trond Mohn Stiftelse](https://mohnfoundation.no/prosjekt/suzette-flantua/) and [University of Bergen](https://www.uib.no/en/bio)
