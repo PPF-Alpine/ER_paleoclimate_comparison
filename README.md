@@ -75,16 +75,16 @@ In addition, you will need the following two datasets:
 Data products from our analysis are stored in the Data folder. This data is ours and needs to be credited when used for other research:
 
 - delta_t
-  	- description
+  	- ∆T values of each paleoclimate model at every proxy location
   
 - delta_t_diff
-  	- description
+  	- calculated difference in ∆T values between paleoclimate models and proxy data
   
 - mountains_xy
-  	- description
+  	- longitude (x) and latitude (y) values for each GMBA mountain range
   
-- **TO ADD: suzettes biome**
-  	- description
+- alpine_biome_temp_delimitation
+  	- shapefile containing temperature values across the globe at which the alpine biome currently exists
  
 # Funding
 This research has been developed for the [PPF-Alpine project](https://mountainsinmotion.w.uib.no/) and is funded by the [Trond Mohn Stiftelse](https://mohnfoundation.no/prosjekt/suzette-flantua/) and [University of Bergen](https://www.uib.no/en/bio)
