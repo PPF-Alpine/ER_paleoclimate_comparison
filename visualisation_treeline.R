@@ -125,6 +125,8 @@ ggplot(zonal_treeline_all, aes(x = Level_03_ordered, y = MEAN, group = source)) 
 #----------------------------------------------------------#
 #      pointplot with range
 #----------------------------------------------------------#
+# reverse the order if you want to plat from North to South, left to right on the x-axis. Comment out if not.
+zonal_treeline_all$Level_03_ordered <- factor(zonal_treeline_all$Level_03_ordered, levels = rev(levels(zonal_treeline_all$Level_03_ordered)))
 
 # elevation vs mountains ordered by lat on x axis all models
 ggplot(zonal_treeline_all, aes(x = Level_03_ordered, y = MEAN, group = source)) +
