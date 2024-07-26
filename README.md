@@ -80,6 +80,9 @@ Data products from our analysis are stored in the Data folder. This data is ours
 - delta_t_diff
   	- calculated difference in ∆T values between paleoclimate models and proxy data
   
+-zonal_tree_all
+	- treeline elevations obtained using the treeline_extraction script, with zonal statistics computed in ArcGIS Pro v3.1.0
+
 - mountains_xy
   	- longitude (x) and latitude (y) values for each GMBA mountain range
   
