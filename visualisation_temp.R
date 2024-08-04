@@ -276,3 +276,15 @@ ggplot(temp_diff_data, aes(x = model, y = values, fill = in_mr)) +
         axis.text.y = element_text(size = 12),
         legend.title = element_blank())
 
+ggplot(temp_diff_data, aes(x=factor(model, levels = model_order_diff), values, fill = in_mr)) + 
+  geom_boxplot(width = 0.4, outlier.shape = NA, alpha = 0.5, position = "dodge") + 
+  geom_violinhalf(position = position_nudge(x = 0.27, y = 0), alpha = 0.5, side = "r", trim = FALSE ) +
+  ggtitle("ΔT difference (model-proxy) distribution within and outside mountain ranges") + 
+  labs(x = "", y = "ΔT difference (°C)") + 
+  geom_hline(yintercept = 0, color = "red", linetype = "solid") + 
+  scale_fill_manual(values = c("within" = "#FF5722", "outside" = "#607D8B")) + 
+  scale_x_discrete(labels = new_names_diff) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(size = 12), 
+        axis.text.y = element_text(size = 12),
+        legend.title = element_blank())
