@@ -16,7 +16,8 @@ if (!require(plotly)) install.packages("plotly")
 if (!require(tidyverse)) install.packages("tidyverse")
 if (!require(dplyr)) install.packages("dplyr")
 if (!require(sf)) install.packages("sf")
-if (!require('ggbeeswarm')) install.packages('ggbeeswarm')
+if (!require(ggbeeswarm)) install.packages("ggbeeswarm")
+if (!require(see)) install.packages("see")
 
 
 # Load the packages
@@ -26,7 +27,8 @@ library("tidyverse")
 library("plotly")
 library("dplyr")
 library("sf")
-library(ggbeeswarm)
+library("ggbeeswarm")
+library("see")
 
 #run this if conflicts occur in loading tidyverse
 # library(conflicted)  
