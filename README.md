@@ -1,14 +1,14 @@
 
 # About the project
 
-This repository is part of the publication "TITLE" by Rentier et al. (2024) [link to publication] and contains the information needed to reproduce the analysis and visualisations of the research.
+This repository is part of the publication "Underestimation of LGM cooling by paleoclimate models affects biome reconstructions in mountain ranges globally" by Rentier et al. (2024) [link and citation pending] and contains the information needed to reproduce the analysis and visualisations of the research.
 We kindly refer to the original paper for more information on the purpose of the scripts in this repository and a detailed description of the method.
 
 ### How to cite
-Please cite Rentier et al. (2024) if you wish to (re)use any data or scripts from this repository. If you have any questions regarding this matter, feel free to contact us [link to contact details].
+Please cite Rentier et al. (2024) if you wish to (re)use any data or scripts from this repository. If you have any questions regarding this matter, feel free to contact us.
 Recommended citation:
 
-_(insert citation)_
+_(citation pending)_
 
 # Getting started
 ### Prerequisites
