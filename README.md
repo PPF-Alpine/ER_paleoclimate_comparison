@@ -1,7 +1,7 @@
 
 # About the project
 
-This repository is part of the publication "Underestimation of LGM cooling by paleoclimate models affects biome reconstructions in mountain ranges globally" by Rentier et al. (2024) [link and citation pending] and contains the information needed to reproduce the analysis and visualisations of the research.
+This repository is part of the publication "Underestimation of LGM cooling by paleoclimate simulations affects biome reconstructions in mountain ranges globally" by Rentier et al. (2024) and contains the information needed to reproduce the analysis and visualisations of the research.
 We kindly refer to the original paper for more information on the purpose of the scripts in this repository and a detailed description of the method.
 
 ### How to cite
