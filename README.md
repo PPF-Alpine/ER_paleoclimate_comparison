@@ -40,7 +40,7 @@ and a script to run some exploratory analysis to get a feel of the data:
 
 # Data
 ### Original data
-Five different paleoclimate models form the basis of our analysis. Their raw data is needed to run the "treeline_extraction.ipynb". This data is not ours and can be downloaded on their respective websites:
+Five different paleoclimate simulations form the basis of our analysis. Their raw data is needed to run the "treeline_extraction.ipynb". This data is not ours and can be downloaded on their respective websites:
 
 - CHELSA-TRaCE21K
 	- **Present**: CHELSA_TraCE21K_bio01_20_V1.0.tif
@@ -75,10 +75,10 @@ In addition, you will need the following two datasets:
 Data products from our analysis are stored in the Data folder. This data is ours and needs to be credited when used for other research:
 
 - delta_t
-  	- ∆T values of each paleoclimate model at every proxy location
+  	- ∆T values of each paleoclimate simulation at every proxy location
   
 - delta_t_diff
-  	- calculated difference in ∆T values between paleoclimate models and proxy data
+  	- calculated difference in ∆T values between paleoclimate simulations and proxy data
   
 - zonal_tree_all
 	- treeline elevations obtained using the treeline_extraction script, with zonal statistics computed in ArcGIS Pro v3.1.0
