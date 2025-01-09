@@ -155,6 +155,37 @@ ggplot(filtered_data, aes(lat, values, color = in_mr)) +
         panel.background= element_rect(fill = "grey99"), # Add a grey background to the plot
         panel.border = element_rect(colour="white", fill=NA))
 
+## GAM analysis
+filter_within <- filter(filtered_data, in_mr == "within")
+data_ggc_in <- filter(filter_within, model == "ggc_diff_mean")
+GAM_lat_in <- mgcv::gam(data_ggc_in$values ~ s(data_ggc_in$lat, bs = "fs", k = 5, m=2), data = data_ggc_in, method = "REML")
+plot(GAM_lat_in)
+summary(GAM_lat_in)
+
+filter_outside <- filter(filtered_data, in_mr == "outside")
+data_ggc_out <- filter(filter_outside, model == "ggc_diff_mean")
+GAM_lat_out <- mgcv::gam(data_ggc_out$values ~ s(data_ggc_out$lat, bs = "fs", k = 5, m=2), data = data_ggc_out, method = "REML")
+plot(GAM_lat_out)
+summary(GAM_lat_out)
+
+##GAM curve
+ggplot(filtered_data, aes(lat, values, color = in_mr)) + 
+  geom_point(alpha = 1, position = "identity") + 
+  geom_hline(yintercept = 0, color = "red", linetype = "solid") + 
+  scale_color_manual(values = c("within" = "#FF5722", "outside" = "#607D8B")) + 
+  geom_smooth(method = "gam", formula = y ~ s(x), level = 0.95) +
+  facet_wrap(~model, ncol = 2, scales = "fixed") + 
+  labs(x = "Latitude", y = "ΔT difference (°C)") + 
+  theme_minimal() +
+  theme(axis.text.x = element_text(size = 12), 
+        axis.text.y = element_text(size = 12),
+        legend.title = element_blank(),
+        strip.background = element_blank(),
+        strip.text.x = element_blank(), #element_text(size = 12)) #  removes text from titles
+        panel.spacing = unit(1, "lines"),  # Adjust the amount of space as needed
+        panel.background= element_rect(fill = "grey99"), # Add a grey background to the plot
+        panel.border = element_rect(colour="white", fill=NA))
+
 #----------------------------------------------------------#
 #      Boxplots
 #----------------------------------------------------------#
