@@ -18,7 +18,7 @@ if (!require(dplyr)) install.packages("dplyr")
 if (!require(sf)) install.packages("sf")
 if (!require(ggbeeswarm)) install.packages("ggbeeswarm")
 if (!require(see)) install.packages("see")
-
+if (!require('mgcv')) install.packages('mgcv')
 
 # Load the packages
 library("readxl")
@@ -29,6 +29,7 @@ library("dplyr")
 library("sf")
 library("ggbeeswarm")
 library("see")
+library("mgcv")
 
 #run this if conflicts occur in loading tidyverse
 # library(conflicted)  
